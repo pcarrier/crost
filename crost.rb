@@ -44,6 +44,14 @@
 ## Whether it be scripts like this one, plugins for automated downloaders,
 ## collection managers, video players, etc.
 
+
+# TODO:
+# - rm mode (only removes files if properly scrobbled)
+# - mv mode (only moves files if properly scrobbled)
+# - Real command-line parsing, with -h
+# - Nicer error reporting
+# + Inline "TODO:" comments
+
 require 'json'
 require 'net/http'
 require 'net/https'
