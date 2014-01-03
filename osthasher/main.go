@@ -18,7 +18,7 @@ func main() {
 		}
 		hash, err := hashing.Hash(file)
 		if err != nil {
-			log.Fatal(err)
+			log.Fatalf("%s: %v", filename, err)
 		}
 		fmt.Printf("%016x\t%s\n", hash, filename)
 	}
