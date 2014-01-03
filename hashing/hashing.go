@@ -1,6 +1,7 @@
 package hashing
 
 import (
+	"encoding/binary"
 	"errors"
 	"fmt"
 	"os"
@@ -13,14 +14,7 @@ const (
 func hashChunk(chunk []byte) uint64 {
 	hash := uint64(0)
 	for i := 0; i < chunkSize; i += 8 {
-		hash += uint64(chunk[i+0]) << (0 * 8)
-		hash += uint64(chunk[i+1]) << (1 * 8)
-		hash += uint64(chunk[i+2]) << (2 * 8)
-		hash += uint64(chunk[i+3]) << (3 * 8)
-		hash += uint64(chunk[i+4]) << (4 * 8)
-		hash += uint64(chunk[i+5]) << (5 * 8)
-		hash += uint64(chunk[i+6]) << (6 * 8)
-		hash += uint64(chunk[i+7]) << (7 * 8)
+		hash += binary.LittleEndian.Uint64(chunk[i : i+8])
 	}
 	return hash
 }
