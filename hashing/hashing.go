@@ -33,14 +33,14 @@ func Hash(file *os.File) (uint64, error) {
 	if err != nil {
 		return 0, err
 	}
-	read, err := file.Read(chunk)
+	bytesRead, err := file.Read(chunk)
 	if err != nil {
 		return 0, err
 	}
-	if read != chunkSize {
+	if bytesRead != chunkSize {
 		msg := fmt.Sprintf(
 			"read only %d bytes instead of %d; file too small?",
-			read, chunkSize)
+			bytesRead, chunkSize)
 		return 0, errors.New(msg)
 	}
 	beginningHash := hashChunk(chunk)
@@ -50,14 +50,14 @@ func Hash(file *os.File) (uint64, error) {
 	if err != nil {
 		return 0, err
 	}
-	read, err = file.Read(chunk)
+	bytesRead, err = file.Read(chunk)
 	if err != nil {
 		return 0, err
 	}
-	if read != chunkSize {
+	if bytesRead != chunkSize {
 		msg := fmt.Sprintf(
 			"read %d bytes instead of %d at the end",
-			read, chunkSize)
+			bytesRead, chunkSize)
 		return 0, errors.New(msg)
 	}
 	endHash := hashChunk(chunk)
