@@ -79,11 +79,11 @@ def log msg
   STDERR.puts "#{DateTime.now.rfc3339}: #{msg}"
 end
 
-def hashFile(file)
-  file.seek(0, IO::SEEK_SET)
-  buffer = file.sysread(HASH_CHUNK_SIZE)
-  file.seek(-HASH_CHUNK_SIZE, IO::SEEK_END)
-  buffer << file.sysread(HASH_CHUNK_SIZE)
+def hash_file file
+  file.seek 0, IO::SEEK_SET
+  buffer = file.sysread HASH_CHUNK_SIZE
+  file.seek -HASH_CHUNK_SIZE, IO::SEEK_END
+  buffer << file.sysread HASH_CHUNK_SIZE
 
   bufsize = buffer.size
   raise "Only read #{bufsize} bytes" if bufsize != 2 * HASH_CHUNK_SIZE
@@ -101,13 +101,13 @@ def format_OST i
   res << " (#{i['MovieYear']}, IMDB:#{i['MovieImdbID']})"
 end
 
-def scan_for_IDs(files)
+def scan_for_IDs files
   md = Hash.new do |h,k|
     h[k] = {:filenames => []}
   end
 
   files.each do |name|
-    hash = File.open(name, 'rb') { |f| '%08x' % hashFile(f) }
+    hash = File.open(name, 'rb') { |f| '%08x' % hash_file(f) }
     md[hash][:filenames] << name
   end
 
@@ -143,7 +143,7 @@ def scan_for_IDs(files)
   res
 end
 
-def scrobble(api_key, records)
+def scrobble api_key, records
   uri = URI.parse "https://api.trakt.tv/user/seen/#{api_key}"
   client = Net::HTTP.new uri.host, uri.port
   client.use_ssl = true
